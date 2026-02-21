@@ -35,5 +35,10 @@ PATCH_VBMETA_FLAG=auto;
 # boot install
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 
+# handle legacy bootargs
+sdk=$(getprop ro.build.version.sdk)
+[ "$sdk" -lt 36 ] && patch_cmdline init.is_legacy_ebpf= init.is_legacy_ebpf=1
+[ "$sdk" -lt 33 ] && patch_cmdline init.is_legacy_timestamp= init.is_legacy_timestamp=1
+
 write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
 ## end boot install
